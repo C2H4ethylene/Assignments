@@ -1,0 +1,139 @@
+<html lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<style>	
+		/*display*/
+		textarea {width:700px; height:15%; margin-inline: 5px; margin-left: 20px; margin-right: 10px;
+		  border: 2px solid black; 
+		  font-size: 15px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+		  text-align: center;}
+
+		li {font-size: 20px;}
+
+		#text {cursor:help; }
+
+		#title {font-size: 24px; border: 1px solid;}
+
+		button {font-size: 15px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+				background-color:rgb(255, 255, 255);
+				display:inline-block;
+				text-align: center; width: 150px; height: 5%;
+				color: #000000; 
+				border: 1px solid #000000; border-radius: 0px;
+				cursor: pointer;
+				box-shadow: 10px 10px 2px; 
+				margin-left: 20px; margin-right: 10px; margin-top: 10px; margin-bottom: 30px;}
+		
+		button:hover {background-color: #000000; color:rgb(255, 255, 255)}
+
+	</style>
+</head>
+
+<body>
+	<textarea id="text" rows="3"> </textarea> 
+	<br> 
+	<div class="divButton">
+		<button id="btn_add">Add</button>
+		<button id="btn_hide">Toggle</button>
+	</div>
+
+	<ol id="list">
+		<span id="title"> Your To-Do-List: </span> <br>
+		
+
+	</ol>	
+
+	<script>
+		divById = document.getElementById('list');
+
+		function Add() {
+			//divById = document.getElementById('list');
+
+			text_to_use = document.getElementById("text").value;
+			phr = text_to_use.split(';')
+			//console.log(phr)
+			//phr: ['Dinner, 1', ' Exercise, 2', ' Study, 3']
+
+			for (i in phr) {
+				item = phr[i]
+				content = item.split(',')[0]
+				colour = item.split(',')[1]
+				//console.log(phr[i]) 
+				//console.log(content.trim())
+				//console.log(colour.trim())
+
+				//content successfully listed
+				newList = document.createElement('li');
+				newList.innerHTML = content.trim()
+				divById.appendChild(newList);
+				newList.classList.add('newList')
+
+				//colour
+				if (colour == 1){
+					newList.style.color = 'red'
+				}
+
+				if (colour == 2){
+					newList.style.color = 'black'
+				}
+
+				if (colour == 3){
+					newList.style.color = 'grey'
+				}
+			}
+
+			document.getElementById("text").value = "";
+		}
+
+		document.getElementById('btn_add').onclick = Add;
+
+		//double-click to delete the task
+		divById.addEventListener('dblclick', function(a){
+			target = a.target;
+			if (target.classList.contains('newList')) {
+				Comfirm()
+			}
+		}) 
+		
+		function Comfirm() {
+                if (confirm("Delete this Task?")) {
+                    target.parentNode.removeChild(target);
+                } else {
+					alert("Deletion is cancelled")
+				}
+            }
+
+
+		//single-click
+		divById.addEventListener('click', function(a){
+			target = a.target;
+			if (target.classList.contains('newList')) {
+				if (target.style.textDecoration == 'line-through') {
+					target.style.textDecoration = '';
+					target.classList.remove('line')
+				} else{
+					target.style.textDecoration = 'line-through';
+					target.classList.add('line')
+				}
+			}
+		})
+			
+		temp = document.getElementsByClassName('newList')
+
+		function Toggle(){
+			for (var i = 0; i <= temp.length-1; i++) {
+				if (temp[i].classList.contains('line') ) {
+
+					if (temp[i].style.display == '') {
+						temp[i].style.display = 'none';
+						console.log('done')} else if (temp[i].style.display == 'none') {
+						temp[i].style.display = '';
+						 console.log('show')}
+				}
+			}}
+
+		document.getElementById('btn_hide').onclick = Toggle;
+
+	</script>
+
+
+</body></html>
